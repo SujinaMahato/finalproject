@@ -15,39 +15,36 @@ class LoginController extends Controller
 
    
     public function store(Request $request): RedirectResponse
-{
-    $request->validate([
-        'email' => 'required|email',
-        'password' => 'required|string|min:6',
-    ]);
+    {
+        $request->validate([
+            'email' => 'required|email',
+            'password' => 'required|string|min:6',
+        ]);
 
-    if (Auth::attempt($request->only('email', 'password'))) {
-        $request->session()->regenerate();
-        
-        $request->session()->forget('answer');
+        if (Auth::attempt($request->only('email', 'password'))) {
+            $request->session()->regenerate();
+            
+            $request->session()->forget('answer');
 
-      
 
-Session::forget('answered_questions');
-Session::put('solved_count', 0);
-
- 
-
-        if (Auth::user()->role === 'admin') {
-            return redirect()->route('admin.dashboard');
-        } elseif (Auth::user()->role === 'user' || Auth::user()->role === 'student') {
-            return redirect()->route('student.dashboard'); 
-        } elseif (Auth::user()->role === 'teacher') {
-            return redirect()->route('teacher.profile'); 
-        }
-    }
-
-    return redirect()->route('login')->withErrors([
-        'email' => 'The provided credentials do not match our records.',
-    ]);
-}
+            Session::forget('answered_questions');
+            Session::put('solved_count', 0);
     
 
+            if (Auth::user()->role === 'admin') {
+                return redirect()->route('admin.dashboard');
+            } elseif (Auth::user()->role === 'user' || Auth::user()->role === 'student') {
+                return redirect()->route('student.dashboard'); 
+            } elseif (Auth::user()->role === 'teacher') {
+                return redirect()->route('teacher.profile'); 
+            }
+        }
+
+        return redirect()->route('login')->withErrors([
+            'email' => 'The provided credentials do not match our records.',
+        ]);
+    }
+        
     public function logout(Request $request): RedirectResponse
     {
         DB::table('user_answers')->where('user_id', Auth::id())->delete();

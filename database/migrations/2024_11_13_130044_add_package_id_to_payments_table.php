@@ -6,18 +6,24 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
+    /**
+     * Run the migrations.
+     */
     public function up()
     {
         Schema::table('payments', function (Blueprint $table) {
-            $table->string('sub_heading')->nullable(); // or heading
+            $table->foreignId('package_id')->constrained('packages')->onDelete('cascade');
         });
     }
     
-    public function down()
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
     {
         Schema::table('payments', function (Blueprint $table) {
-            $table->dropColumn('sub_heading'); // or heading
+            //
         });
     }
-    
 };

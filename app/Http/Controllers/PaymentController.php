@@ -10,28 +10,27 @@ use Auth;
 class PaymentController extends Controller
 {
     public function success(Request $request)
-{
-    \Log::info('eSewa Payment Response:', $request->all());
-
-    $validated = $request->validate([
-        'amt' => 'required',
-        'oid' => 'required',
-        'refId' => 'required',
-        'sub_heading' => 'nullable|string', 
-    ]);
-
-    $payment = new Payment();
-    $payment->user_id = Auth::id();
-    $payment->product_id = $request->oid;
-    $payment->amount = $request->amt;
-    $payment->transaction_id = $request->refId;
-    $payment->status = 'completed';
-    $payment->sub_heading = $request->sub_heading; 
-    $payment->save();
-
-    return redirect()->route('student.dashboard')->with('success', 'Payment successful!');
-}
-
+    {
+        \Log::info('eSewa Payment Response:', $request->all());
+    
+        $validated = $request->validate([
+            'amt' => 'required',
+            'oid' => 'required',
+            'refId' => 'required',
+            'package_id' => 'required|exists:packages,id', 
+        ]);
+    
+        $payment = new Payment();
+        $payment->user_id = Auth::id();
+        $payment->product_id = $request->oid;
+        $payment->amount = $request->amt;
+        $payment->transaction_id = $request->refId;
+        $payment->status = 'completed';
+        $payment->package_id = $request->package_id; 
+        $payment->save();
+    
+        return redirect()->route('student.dashboard')->with('success', 'Payment successful!');
+    }
     
     public function failure(Request $request)
     {

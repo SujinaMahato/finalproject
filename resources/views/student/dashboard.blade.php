@@ -419,7 +419,9 @@
                     <input type="hidden" name="pdc" value="0">  
 
                     <input type="hidden" name="scd" value="EPAYTEST">
-                    <input type="hidden" name="pid" id="productID" value=""> 
+                    <input type="hidden" name="pid" id="productID" value="">
+                    <input type="hidden" name="package_id" value="{{ $quizzes->first()->package_id }}">
+ 
 
                     <input type="hidden" name="su" value="{{ route('payment.success') }}"> 
                     <input type="hidden" name="fu" value="{{ route('payment.failure') }}"> 
