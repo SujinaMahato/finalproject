@@ -160,10 +160,62 @@
         <button type="submit" form="quizForm" class="bg-blue-500 text-white p-2 rounded nav-button" onclick="return confirmSubmit()">Submit</button>
     @endif
 </div>
-<!-- Restart Exam Button -->
-<a href="{{ route('start.exam', ['examTitle' => $quiz->heading]) }}" class="bg-blue-500 text-white p-2 rounded" onclick="localStorage.setItem('restartExam', true);">Restart Exam</a>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    let timeLimit = @json($timeDuration) * 60;
+    let startTime = localStorage.getItem('startTime');
+    let timeRemaining = timeLimit;
 
+    // Check if restarting
+    if (localStorage.getItem('restartExam')) {
+        startTime = Date.now();
+        localStorage.setItem('startTime', startTime);
+        timeRemaining = timeLimit;
 
+        // Clear all selections and reset question statuses
+        document.querySelectorAll('input[type="radio"]').forEach(input => input.checked = false);
+        document.querySelectorAll('.question-button').forEach(button => button.classList.remove('solved'));
+
+        // Reset counters
+        localStorage.setItem('solvedCount', 0);
+        localStorage.setItem('unsolvedCount', {{ $totalQuestions }});
+
+        // Clear the restart flag
+        localStorage.removeItem('restartExam');
+    } else if (startTime) {
+        // Calculate elapsed time if the exam has already started
+        let elapsedTime = Math.floor((Date.now() - startTime) / 1000);
+        timeRemaining = Math.max(timeLimit - elapsedTime, 0);
+    } else {
+        // Set initial start time
+        startTime = Date.now();
+        localStorage.setItem('startTime', startTime);
+    }
+
+    const timerElement = document.getElementById('timer');
+    const interval = setInterval(function () {
+        const minutes = Math.floor(timeRemaining / 60);
+        const seconds = timeRemaining % 60;
+        timerElement.textContent = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+
+        if (timeRemaining <= 0) {
+            clearInterval(interval);
+
+            // Auto-submit the exam form when time is up
+            document.getElementById("quizForm").submit();
+
+            // Show the timer message after form submission
+            timerElement.textContent = "Time's up!";
+            
+            // Redirect to exam summary page if necessary
+            window.location.href = "{{ route('exam.summary', ['quiz_id' => $quiz->id]) }}";
+        }
+
+        timeRemaining--;
+        localStorage.setItem('timeRemaining', timeRemaining);
+    }, 1000);
+});
+</script>
 <script>
     document.addEventListener("DOMContentLoaded", function () {
         const audioElements = document.querySelectorAll("audio");
@@ -184,58 +236,5 @@
         return confirm('You have completed the quiz. Are you sure you want to submit?');
     }
 </script>
-
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        let timeLimit = @json($timeDuration) * 60; 
-        
-        let startTime = localStorage.getItem('startTime');
-        let timeRemaining = localStorage.getItem('timeRemaining');
-
-        if (!startTime || localStorage.getItem('restartExam')) {
-            startTime = Date.now();
-            timeRemaining = timeLimit;
-            localStorage.setItem('startTime', startTime);
-            localStorage.setItem('timeRemaining', timeRemaining);
-
-            localStorage.removeItem('restartExam');
-        } else {
-            let elapsedTime = Math.floor((Date.now() - startTime) / 1000); // in seconds
-            timeRemaining = timeRemaining - elapsedTime;
-
-            if (timeRemaining <= 0) {
-                timeRemaining = 0;
-            }
-
-            localStorage.setItem('timeRemaining', timeRemaining);
-        }
-
-        const timerElement = document.getElementById('timer');
-        
-   
-        const interval = setInterval(function () {
-            const minutes = Math.floor(timeRemaining / 60); 
-            const seconds = timeRemaining % 60; 
-
-            timerElement.textContent = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
-
-            if (timeRemaining <= 0) {
-                clearInterval(interval); 
-                timerElement.textContent = "Time's up!";
-
-                document.getElementById("quizForm").submit();
-
-                setTimeout(function () {
-                    window.location.href = "{{ route('exam.summary', ['quiz_id' => $quiz->id]) }}"; 
-                }, 1000);
-            }
-
-            timeRemaining--;
-
-            localStorage.setItem('timeRemaining', timeRemaining);
-        }, 1000);
-    });
-</script>
-
 </body>
 </html>

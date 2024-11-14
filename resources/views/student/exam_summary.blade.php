@@ -41,9 +41,7 @@
 
             <div class="flex justify-center gap-4 mt-4">
                 <a href="{{ route('student.viewresult', ['quiz_id' => $quiz_id]) }}" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">VIEW RESULT</a>
-                <a href="{{ route('student.result') }}" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">RESULTS LIST</a>
-                
-            </div>
+           </div>
 
         </div>
     </div>

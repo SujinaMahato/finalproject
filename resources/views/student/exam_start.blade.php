@@ -164,10 +164,10 @@
 </div>
 
 <div class="row">
-<!-- Reading Questions Section -->
+    <!-- Reading Questions Section -->
     <div class="col-md-6">
         <div class="question-container">
-        <h5 class="question-section-title">Reading Questions</h5>
+            <h5 class="question-section-title">Reading Questions</h5>
             <div class="questions-wrapper">
                 @foreach ($questions as $question)
                     @if ($question->question_number <= 20)
@@ -178,7 +178,7 @@
                                 ->exists();
                         @endphp
                         <a href="{{ route('student.showQuestion', ['quiz_id' => $question->quiz_id, 'question_number' => $question->question_number]) }}"
-                           class="btn {{ $isAnswered ? 'btn-success' : 'btn-outline-secondary' }}">
+                           class="btn question-button {{ $isAnswered ? 'btn-success' : 'btn-outline-secondary' }}">
                             {{ $question->question_number }}
                         </a>
                     @endif
@@ -187,7 +187,7 @@
         </div>
     </div>
 
-<!-- Listening Questions Section -->
+    <!-- Listening Questions Section -->
     <div class="col-md-6">
         <div class="question-container">
             <h5 class="question-section-title">Listening Questions</h5>
@@ -196,86 +196,96 @@
                     No Listening Questions
                 </div>
             @else
-            <div class="questions-wrapper">
-    @foreach ($questions as $question)
-        @if ($question->question_number > 20)
-            @php
-                $isAnswered = DB::table('user_answers')
-                    ->where('user_id', Auth::id())
-                    ->where('question_id', $question->id)
-                    ->exists();
-            @endphp
-            <a href="{{ route('student.showQuestion', ['quiz_id' => $question->quiz_id, 'question_number' => $question->question_number]) }}" 
-               class="btn {{ $isAnswered ? 'btn-success' : 'btn-outline-secondary' }}">
-                {{ $question->question_number }}
-            </a>
-        @endif
-    @endforeach
-</div>
+                <div class="questions-wrapper">
+                    @foreach ($questions as $question)
+                        @if ($question->question_number > 20)
+                            @php
+                                $isAnswered = DB::table('user_answers')
+                                    ->where('user_id', Auth::id())
+                                    ->where('question_id', $question->id)
+                                    ->exists();
+                            @endphp
+                            <a href="{{ route('student.showQuestion', ['quiz_id' => $question->quiz_id, 'question_number' => $question->question_number]) }}" 
+                               class="btn question-button {{ $isAnswered ? 'btn-success' : 'btn-outline-secondary' }}">
+                                {{ $question->question_number }}
+                            </a>
+                        @endif
+                    @endforeach
+                </div>
             @endif
         </div>
     </div>
 </div>
 
-
 <!-- Submit Button -->
 <div class="d-flex justify-content-end mt-3">
     <form method="GET" action="{{ url('/exam-summary/' . $quizId) }}">
-        <button class="btn btn-primary btn-submit">Submit and Finish Exam</button>
+        <button class="btn btn-primary btn-submit" id="submitExamButton">Submit and Finish Exam</button>
     </form>
-    </div>
-</div>     
+</div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
 <script>
-    document.addEventListener("DOMContentLoaded", function () {
-        let timeLimit = @json($timeDuration) * 60; // $timeDuration is the quiz time duration in minutes
-        
-        let startTime = localStorage.getItem('startTime');
-        let timeRemaining = localStorage.getItem('timeRemaining');
+document.addEventListener("DOMContentLoaded", function () {
+    let timeLimit = @json($timeDuration) * 60;
+    let startTime = localStorage.getItem('startTime');
+    let timeRemaining = timeLimit;
 
-        if (!startTime || localStorage.getItem('restartExam')) {
-            startTime = Date.now();
-            timeRemaining = timeLimit;
-            localStorage.setItem('startTime', startTime);
-            localStorage.setItem('timeRemaining', timeRemaining);
+    // Check if restarting
+    if (localStorage.getItem('restartExam')) {
+        startTime = Date.now();
+        localStorage.setItem('startTime', startTime);
+        timeRemaining = timeLimit;
 
-            localStorage.removeItem('restartExam');
-        } else {
-            let elapsedTime = Math.floor((Date.now() - startTime) / 1000); // in seconds
-            timeRemaining = timeRemaining - elapsedTime;
+        // Clear all selections and reset question statuses
+        document.querySelectorAll('input[type="radio"]').forEach(input => input.checked = false);
+        document.querySelectorAll('.question-button').forEach(button => button.classList.remove('solved'));
 
-            if (timeRemaining <= 0) {
-                timeRemaining = 0;
-            }
+        // Reset counters
+        localStorage.setItem('solvedCount', 0);
+        localStorage.setItem('unsolvedCount', {{ $totalQuestions }});
 
-            localStorage.setItem('timeRemaining', timeRemaining);
+        // Clear the restart flag
+        localStorage.removeItem('restartExam');
+    } else if (startTime) {
+        // Calculate elapsed time if the exam has already started
+        let elapsedTime = Math.floor((Date.now() - startTime) / 1000);
+        timeRemaining = Math.max(timeLimit - elapsedTime, 0);
+    } else {
+        // Set initial start time
+        startTime = Date.now();
+        localStorage.setItem('startTime', startTime);
+    }
+
+    const timerElement = document.getElementById('timer');
+    const interval = setInterval(function () {
+        const minutes = Math.floor(timeRemaining / 60);
+        const seconds = timeRemaining % 60;
+        timerElement.textContent = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+
+        if (timeRemaining <= 0) {
+            clearInterval(interval);
+
+            // Disable all question buttons except the "Submit and Finish Exam" button
+            document.querySelectorAll('.question-button').forEach(button => button.disabled = true);
+
+            // Auto-submit the exam form when time is up
+            document.getElementById("quizForm").submit();
+
+            // Show the timer message after form submission
+            timerElement.textContent = "Time's up!";
+            
+            // Redirect to exam summary page if necessary
+            window.location.href = "{{ route('exam.summary', ['quiz_id' => $quiz->id]) }}";
         }
 
-        const timerElement = document.getElementById('timer');
-        
-        const interval = setInterval(function () {
-            const minutes = Math.floor(timeRemaining / 60);
-            const seconds = timeRemaining % 60; 
-
-            timerElement.textContent = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
-
-            if (timeRemaining <= 0) {
-                clearInterval(interval); 
-                timerElement.textContent = "Time's up!";
-
-                document.getElementById("quizForm").submit();
-
-                setTimeout(function () {
-                    window.location.href = "{{ route('exam.summary', ['quiz_id' => $quiz->id]) }}"; 
-                }, 1000); 
-            }
-
-            timeRemaining--;
-
-            localStorage.setItem('timeRemaining', timeRemaining);
-        }, 1000);
-    });
+        timeRemaining--;
+        localStorage.setItem('timeRemaining', timeRemaining);
+    }, 1000);
+});
 </script>
+
+
 </body>
 </html>

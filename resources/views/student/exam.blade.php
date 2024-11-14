@@ -119,12 +119,16 @@
                 @endif
             </div>
             <div class="card-body">
-                <h5>Your Exam ID: {{ $examId }}</h5>
-                <p class="card-text"><strong>Name of Student:</strong> {{ auth()->user()->username }}</p>
-                <p class="card-text"><strong>Exam Title: {{ $examTitle }}</strong></p>
-                <a href="{{ route('start.exam', ['examTitle' => $examTitle]) }}" class="btn btn-primary">Get Started</a>
-                <a href="{{ route('student.dashboard') }}" class="btn btn-secondary">Cancel</a>
-            </div>
+    <h5>Your Exam ID: {{ $examId }}</h5>
+    <p class="card-text"><strong>Name of Student:</strong> {{ auth()->user()->username }}</p>
+    <p class="card-text"><strong>Exam Title: {{ $examTitle }}</strong></p>
+    <a href="{{ route('start.exam', ['examTitle' => $examTitle]) }}" 
+       class="btn btn-primary" 
+       onclick="startExamTimer()">Get Started</a>
+    <a href="{{ route('student.dashboard') }}" class="btn btn-secondary">Cancel</a>
+</div>
+
+
         </div>
         <div class="alert alert-info mt-4">
             <strong>Note:</strong>
@@ -136,5 +140,20 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.js"></script>
+    
+    <script>
+    function startExamTimer() {
+        // Clear any previous exam state
+        localStorage.removeItem('startTime');
+        localStorage.removeItem('timeRemaining');
+        localStorage.removeItem('solvedCount');        
+        localStorage.removeItem('unsolvedCount');      
+        localStorage.removeItem('selectedOptions');   
+
+        // Set the new start time for the exam
+        localStorage.setItem('startTime', Date.now());
+    }
+</script>
+
 </body>
 </html>
