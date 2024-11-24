@@ -56,7 +56,7 @@
     <div class="sidebar">
       <div class="user-panel mt-3 pb-3 mb-3 d-flex">
         <div class="image">
-          <img src="dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="Admin Image">
+          <img src="{{ asset('dist/img/user2-160x160.jpg') }}" class="img-circle elevation-2" alt="Teacher Image">
         </div>
         <div class="info">
           <a href="#" class="d-block">Admin</a>
@@ -137,7 +137,7 @@
           <li class="nav-item">
             <a href="{{ route('user.list') }}" class="nav-link">
               <i class="nav-icon fas fa-cog"></i>
-              <p>Users <i class="fas fa-angle-left right"></i></p>
+              <p>Users </p>
             </a>
             
           </li>
