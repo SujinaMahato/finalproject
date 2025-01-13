@@ -109,11 +109,8 @@
 </head>
 <body>
 
-    
-<!-- Header -->
-<!-- Header -->
 <div class="exam-header d-flex justify-content-between align-items-center">
-    <h3>APS-KLC UBT Trail Exam</h3>
+    <h3>Online Test</h3>
     <div class="user-name d-flex align-items-center">
         <span>{{ auth()->user()->username }}</span>
         
@@ -128,7 +125,6 @@
 <br>
 <h3 class="text-center">Exam Title: {{ $examTitle }}</h3>
 
-<!-- Main Container -->
 <div class="container container-box">
 
 <!-- Info Bar -->
@@ -164,7 +160,6 @@
 </div>
 
 <div class="row">
-    <!-- Reading Questions Section -->
     <div class="col-md-6">
         <div class="question-container">
             <h5 class="question-section-title">Reading Questions</h5>
@@ -187,7 +182,6 @@
         </div>
     </div>
 
-    <!-- Listening Questions Section -->
     <div class="col-md-6">
         <div class="question-container">
             <h5 class="question-section-title">Listening Questions</h5>
@@ -217,9 +211,8 @@
     </div>
 </div>
 
-<!-- Submit Button -->
 <div class="d-flex justify-content-end mt-3">
-    <form method="GET" action="{{ url('/exam-summary/' . $quizId) }}">
+    <form method="GET" action="{{ route('student.viewresult', ['quiz_id' => $quizId]) }}">
         <button class="btn btn-primary btn-submit" id="submitExamButton">Submit and Finish Exam</button>
     </form>
 </div>
@@ -232,28 +225,22 @@ document.addEventListener("DOMContentLoaded", function () {
     let startTime = localStorage.getItem('startTime');
     let timeRemaining = timeLimit;
 
-    // Check if restarting
     if (localStorage.getItem('restartExam')) {
         startTime = Date.now();
         localStorage.setItem('startTime', startTime);
         timeRemaining = timeLimit;
 
-        // Clear all selections and reset question statuses
         document.querySelectorAll('input[type="radio"]').forEach(input => input.checked = false);
         document.querySelectorAll('.question-button').forEach(button => button.classList.remove('solved'));
 
-        // Reset counters
         localStorage.setItem('solvedCount', 0);
         localStorage.setItem('unsolvedCount', {{ $totalQuestions }});
 
-        // Clear the restart flag
         localStorage.removeItem('restartExam');
     } else if (startTime) {
-        // Calculate elapsed time if the exam has already started
         let elapsedTime = Math.floor((Date.now() - startTime) / 1000);
         timeRemaining = Math.max(timeLimit - elapsedTime, 0);
     } else {
-        // Set initial start time
         startTime = Date.now();
         localStorage.setItem('startTime', startTime);
     }
@@ -267,16 +254,12 @@ document.addEventListener("DOMContentLoaded", function () {
         if (timeRemaining <= 0) {
             clearInterval(interval);
 
-            // Disable all question buttons except the "Submit and Finish Exam" button
             document.querySelectorAll('.question-button').forEach(button => button.disabled = true);
 
-            // Auto-submit the exam form when time is up
             document.getElementById("quizForm").submit();
 
-            // Show the timer message after form submission
             timerElement.textContent = "Time's up!";
             
-            // Redirect to exam summary page if necessary
             window.location.href = "{{ route('exam.summary', ['quiz_id' => $quiz->id]) }}";
         }
 

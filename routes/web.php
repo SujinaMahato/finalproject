@@ -5,12 +5,15 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\QuizController;
 use App\Http\Controllers\TagController;
+use App\Http\Controllers\CreateController;
 use App\Http\Controllers\QuestionController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\RatingController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\ExamController;
 use App\Http\Controllers\ResultController;
+use App\Http\Controllers\TeacherDashboardController;
 use App\Http\Controllers\PackageController;
 use App\Http\Controllers\AdminResultController;
 use Illuminate\Support\Facades\Route;
@@ -101,12 +104,16 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/teacher/dashboard', function () {
         return view('teacher.dashboard'); 
     })->name('teacher.dashboard');
+    Route::get('/teacher/dashboard', [TeacherDashboardController::class, 'dashboard'])->name('teacher.dashboard');
+
 
     Route::resource('quizzes', QuizController::class);
     Route::resource('questions', QuestionController::class);
     Route::get('/questions/{quizId}/fetch', [QuestionController::class, 'fetchQuestions'])->name('questions.fetch');
     Route::resource('tags', TagController::class);
+    Route::resource('creates', CreateController::class);
     Route::resource('packages', PackageController::class);
+    Route::post('quiz/{quizId}/rating', [RatingController::class, 'store'])->name('ratings.store');
 
 });
 

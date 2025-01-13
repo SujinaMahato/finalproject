@@ -39,9 +39,7 @@
                         </p>
                     </div>
 
-<!-- New Containers for Correct, Incorrect, and Unsolved -->
 <div class="grid grid-cols-3 gap-4 mt-6">
-    <!-- Correct Questions -->
     <div class="bg-green-100 border border-green-400 text-green-700 rounded-lg p-4 text-center">
         <h4 class="font-bold">Correct Questions</h4>
         <p class="text-2xl">{{ $totalCorrect }}</p>
@@ -57,7 +55,6 @@
         </ul>
     </div>
 
-    <!-- Incorrect Questions -->
     <div class="bg-red-100 border border-red-400 text-red-700 rounded-lg p-4 text-center">
         <h4 class="font-bold">Incorrect Questions</h4>
         <p class="text-2xl">{{ $totalIncorrect }}</p>
@@ -73,7 +70,6 @@
     </ul>
 </div>
 
-<!-- Unsolved Questions -->
 <div class="bg-gray-100 border border-gray-400 text-gray-700 rounded-lg p-4 text-center">
     <h4 class="font-bold">Unsolved</h4>
     <p class="text-2xl">{{ $totalUnsolved }}</p>
@@ -91,6 +87,26 @@
     </div>
     <div class="flex justify-center gap-4 mt-4">
         <a href="{{ route('student.result') }}" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">RESULTS LIST</a>
+    </div>
+    <!-- Rating Form -->
+    <div class="star-rating-container mt-6">
+        <h6 class="text-xl font-semibold mb-4">Rate this Exam</h6>
+        <form action="{{ route('ratings.store', ['quizId' => $quiz->id]) }}" method="POST" class="rating-form">
+            @csrf
+            <div class="star-rating flex justify-center gap-2">
+                <input type="radio" id="star5-{{ $quiz->id }}" name="rating" value="5" />
+                <label for="star5-{{ $quiz->id }}" title="5 stars" class="text-yellow-500 text-2xl">&#9733;</label>
+                <input type="radio" id="star4-{{ $quiz->id }}" name="rating" value="4" />
+                <label for="star4-{{ $quiz->id }}" title="4 stars" class="text-yellow-500 text-2xl">&#9733;</label>
+                <input type="radio" id="star3-{{ $quiz->id }}" name="rating" value="3" />
+                <label for="star3-{{ $quiz->id }}" title="3 stars" class="text-yellow-500 text-2xl">&#9733;</label>
+                <input type="radio" id="star2-{{ $quiz->id }}" name="rating" value="2" />
+                <label for="star2-{{ $quiz->id }}" title="2 stars" class="text-yellow-500 text-2xl">&#9733;</label>
+                <input type="radio" id="star1-{{ $quiz->id }}" name="rating" value="1" />
+                <label for="star1-{{ $quiz->id }}" title="1 star" class="text-yellow-500 text-2xl">&#9733;</label>
+            </div>
+            <button type="submit" class="btn btn-primary mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">Submit Rating</button>
+        </form>
     </div>
     </div>
 </body>

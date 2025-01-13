@@ -80,18 +80,17 @@
     </style>
 </head>
 <body>
-    <!-- Top Bar -->
     <div class="top-bar">
-        <h3>APS KLC TRAIL EXAM</h3>
+        <h3>Online Test</h3>
         <div class="user-icon">
             <div class="user-info">
             <div class="user-name">
-                <span>{{ auth()->user()->username }}</span> <!-- Display the username -->
+                <span>{{ auth()->user()->username }}</span> 
                 
-                @if(auth()->user()->image) <!-- Check if user has an uploaded image -->
+                @if(auth()->user()->image) 
                     <img src="{{ Storage::url(auth()->user()->image) }}" alt="User Image" class="user-profile-img" style="width: 30px; height: 30px; border-radius: 50%;">
                 @else
-                    <i class="fas fa-user-circle"></i> <!-- Default icon if no image -->
+                    <i class="fas fa-user-circle"></i> 
                 @endif
             </div>
                 <span class="role">Student</span>
@@ -110,7 +109,7 @@
 
     <!-- Content Section -->
     <div class="content">
-        <h2 class="text-center my-4">Exam Korean</h2>
+        <h2 class="text-center my-4">Exam</h2>
          <div class="user-name">
                 @if(auth()->user()->image)
                     <img src="{{ Storage::url(auth()->user()->image) }}" alt="User Image" class="user-profile-img" style="width: 120px; height: 120px; border-radius: 50%;">
@@ -143,14 +142,12 @@
     
     <script>
     function startExamTimer() {
-        // Clear any previous exam state
         localStorage.removeItem('startTime');
         localStorage.removeItem('timeRemaining');
         localStorage.removeItem('solvedCount');        
         localStorage.removeItem('unsolvedCount');      
         localStorage.removeItem('selectedOptions');   
 
-        // Set the new start time for the exam
         localStorage.setItem('startTime', Date.now());
     }
 </script>

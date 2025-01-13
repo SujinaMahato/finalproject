@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EPS-TOPIK UBT Trail Exam</title>
+    <title>Online Test</title>
    
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
@@ -261,6 +261,14 @@
     #close-popup:hover {
         background-color: #f8f9fa; 
     }
+    .filled {
+    color: #FFD700; 
+    
+}
+.no-star {
+    color: #afaea9; 
+}
+
     
     </style>
 </head>
@@ -271,9 +279,7 @@
     <a href="{{ route('student.dashboard') }}" class="{{ request()->routeIs('dashboard') ? 'active' : '' }}">
         <i class="fas fa-list"></i> Exam List
     </a>
-    <a href="#" class="{{ request()->routeIs('live.exam') ? 'active' : '' }}">
-        <i class="fas fa-play-circle"></i> Live Exam
-    </a>
+    
     <a href="{{ route('student.result') }}" class="{{ request()->routeIs('result') ? 'active' : '' }}">
         <i class="fas fa-poll"></i> Results
     </a>
@@ -284,9 +290,8 @@
 
 
 <div class="content">
-    <!-- Top Bar -->
     <div class="top-bar">
-    <h3>APS KLCTRAIL EXAM</h3>
+    <h3>Online Test</h3>
     <div class="user-icon">
         <div class="user-info">
             <div class="user-name">
@@ -333,7 +338,14 @@
                     @endforeach
                     <br><br>
                     <span class="badge-available">{{ $quiz->active ? 'Available' : 'Unavailable' }}</span> 
-
+                    <div class="mt-3">
+                        <span class="text-warning">
+                            @for ($i = 0; $i < 5; $i++)
+                                <i class="fas fa-star {{ $i < $quiz->ratings->avg('rating') ? 'filled' : 'no-star' }}"></i> 
+                            @endfor
+                        </span>
+                        <span class="ml-2">({{ $quiz->ratings->avg('rating') ?? 'No rating' }})</span>
+                    </div>
                     @if($quiz->active)
                         <a href="{{ route('exam', ['examTitle' => $quiz->heading]) }}" class="btn btn-primary mt-2">
                             START EXAM
@@ -345,7 +357,6 @@
     @endforeach
 </div>
 
-<!-- Exam Packages Section -->
 <h2 class="mt-4"><strong>Exam Packages</strong></h2>
 <div class="exam-packages">
     @if(isset($quizzes) && (is_array($quizzes) ? !empty($quizzes) : $quizzes->isNotEmpty()))
@@ -357,7 +368,6 @@
             @if ($quizzes->first()->package)
                 @php
                     $package = $quizzes->first()->package;
-                    // Check for an active payment that matches the quiz price
                     $activePayment = $payments->firstWhere(function ($payment) use ($quizzes) {
                         return $payment->amount == $quizzes->first()->price && $payment->is_active;
                     });
@@ -395,7 +405,6 @@
     @endif
 </div>
 
-<!-- Modal for eSewa Payment -->
 <div class="modal fade" id="buyExamModal" tabindex="-1" aria-labelledby="buyExamModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -411,7 +420,6 @@
                     <h5 id="modal-package-name"></h5> 
                     <p id="modal-price"></p> 
 
-                    <!-- Hidden Form Fields -->
                     <input type="hidden" name="tAmt" id="totalAmount" value=""> 
                     <input type="hidden" name="amt" id="packagePriceInput" value=""> 
                     <input type="hidden" name="txAmt" value="0">  

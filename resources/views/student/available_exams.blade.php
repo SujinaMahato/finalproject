@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EPS-TOPIK UBT Trail Exam</title>
+    <title>Online Test</title>
   
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
@@ -195,9 +195,7 @@
     <a href="{{ route('student.dashboard') }}" class="{{ request()->routeIs('dashboard') ? 'active' : '' }}">
         <i class="fas fa-list"></i> Exam List
     </a>
-    <a href="#" class="{{ request()->routeIs('live.exam') ? 'active' : '' }}">
-        <i class="fas fa-play-circle"></i> Live Exam
-    </a>
+    
     <a href="{{ route('student.result') }}" class="{{ request()->routeIs('result') ? 'active' : '' }}">
         <i class="fas fa-poll"></i> Results
     </a>
@@ -209,7 +207,7 @@
 <div class="content">
     <!-- Top Bar -->
     <div class="top-bar">
-        <h3>EPS-TOPIK UBT TRAIL EXAM</h3>
+        <h3>Online Test</h3>
         <div class="user-icon">
             <div class="user-info">
                 <div class="user-name">
@@ -266,7 +264,6 @@
         @endif
     </div>    
     
-    {{-- Pagination Links --}}
     <div class="pagination" style="margin-top: 20px;">
         {{ $quizzes->links() }}
         <p>Showing {{ $quizzes->firstItem() }} to {{ $quizzes->lastItem() }} of {{ $quizzes->total() }} exams</p>

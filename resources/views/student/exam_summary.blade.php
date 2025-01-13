@@ -7,12 +7,10 @@
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-100">
-    <!-- Top Bar -->
     <div class="bg-blue-500 text-white text-center py-4">
         <h2 class="text-xl font-bold">Exam Ended - Exam Summary</h2>
     </div>
 
-    <!-- Content Container -->
     <div class="flex justify-center items-center min-h-screen px-4">
         <div class="bg-white rounded-lg shadow-lg p-6 w-full max-w-4xl">
             <div class="p-4 text-center">

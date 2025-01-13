@@ -15,7 +15,7 @@
             </ul>
         </div>
     @endif
-    <h1>Add Quiz</h1>
+    <h1>Add Category</h1>
     
     <form action="{{ route('quizzes.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
@@ -36,12 +36,12 @@
         </div>
         
         <div class="form-group">
-            <label for="heading">Heading:</label>
+            <label for="heading">Category:</label>
             <input type="text" class="form-control" id="heading" name="heading" required>
         </div>
 
         <div class="form-group">
-            <label for="sub_heading">Sub Heading:</label>
+            <label for="sub_heading">Heading:</label>
             <input type="text" class="form-control" id="sub_heading" name="sub_heading">
         </div>
         
@@ -57,11 +57,20 @@
 
         <div class="form-group">
             <label for="tags">Tags:</label>
-            <select name="tags[]" class="form-control" id="tags" multiple required>
+            <div>
                 @foreach ($tags as $tag)
-                    <option value="{{ $tag->id }}">{{ $tag->name }}</option>
+                    <div class="form-check">
+                        <input 
+                            type="checkbox" 
+                            name="tags[]" 
+                            id="tag-{{ $tag->id }}" 
+                            value="{{ $tag->id }}" 
+                            class="form-check-input"
+                            @if(in_array($tag->id, old('tags', isset($quiz) ? $quiz->tags->pluck('id')->toArray() : []))) checked @endif>
+                        <label for="tag-{{ $tag->id }}" class="form-check-label">{{ $tag->name }}</label>
+                    </div>
                 @endforeach
-            </select>
+            </div>
         </div>
 
         <div class="form-group">
@@ -72,7 +81,7 @@
             </select>
         </div>
 
-        <button type="submit" class="btn btn-success">Submit Quiz</button>
+        <button type="submit" class="btn btn-success">Submit Category</button>
     </form>
 </div>
 @endsection

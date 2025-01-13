@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EPS-TOPIK UBT Trail Exam</title>
+    <title>Online Test</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <style>
@@ -141,9 +141,7 @@
     <a href="{{ route('student.dashboard') }}" class="{{ request()->routeIs('dashboard') ? 'active' : '' }}">
         <i class="fas fa-list"></i> Exam List
     </a>
-    <a href="#" class="{{ request()->routeIs('live.exam') ? 'active' : '' }}">
-        <i class="fas fa-play-circle"></i> Live Exam
-    </a>
+   
     <a href="{{ route('student.result') }}" class="{{ request()->routeIs('result') ? 'active' : '' }}">
         <i class="fas fa-poll"></i> Results
     </a>
@@ -153,9 +151,8 @@
 </div>
 
 <div class="content">
-    <!-- Top Bar -->
     <div class="top-bar">
-    <h3>APS KLCTRAIL EXAM</h3>
+    <h3>Online Test</h3>
     <div class="user-icon">
         <div class="user-info">
             <div class="user-name">
@@ -183,7 +180,6 @@
         </div>
     </div>
 <br>
-    <!-- Profile Section -->
      <form action="{{ route('admin.updateProfile') }}" method="POST" enctype="multipart/form-data">
 
                 @csrf
@@ -197,7 +193,6 @@
 
 
                 <div class="row mt-4">
-                    <!-- First Name and Last Name -->
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="firstName">First Name</label>
@@ -213,7 +208,6 @@
                 </div>
 
                 <div class="row">
-                    <!-- Email and Username -->
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="email">Email</label>
@@ -229,7 +223,6 @@
                 </div>
 
                 <div class="row">
-                    <!-- Contact and Role -->
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="contact">Contact</label>
@@ -249,7 +242,6 @@
                 </div>
             </form>
 
-<!-- Bootstrap JS, Popper.js, and jQuery -->
 <script src="https://code.jquery.com/jquery-3.5.2.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>

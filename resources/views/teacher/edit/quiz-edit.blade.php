@@ -15,19 +15,19 @@
             </ul>
         </div>
     @endif
-    <h1>Edit Quiz</h1>
+    <h1>Edit Category</h1>
 
     <form action="{{ route('quizzes.update', $quiz->id) }}" method="POST" enctype="multipart/form-data">
         @csrf
         @method('PUT')
 
         <div class="form-group">
-            <label for="heading">Heading</label>
+            <label for="heading">Category:</label>
             <input type="text" name="heading" class="form-control" value="{{ old('heading', $quiz->heading) }}" required>
         </div>
 
         <div class="form-group">
-            <label for="sub_heading">Sub Heading</label>
+            <label for="sub_heading">Heading</label>
             <input type="text" name="sub_heading" class="form-control" value="{{ old('sub_heading', $quiz->sub_heading) }}">
         </div>
 
@@ -66,7 +66,7 @@
             </select>
         </div>
 
-        <button type="submit" class="btn btn-success">Update Quiz</button>
+        <button type="submit" class="btn btn-success">Update Category</button>
         <a href="{{ route('quizzes.index') }}" class="btn btn-secondary">Cancel</a>
     </form>
 </div>

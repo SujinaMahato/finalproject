@@ -1,6 +1,6 @@
 @extends('teacher.dashboard')
 
-@section('title', 'Add Question')
+@section('title', 'Create Question')
 
 @section('content')
 <div class="container mt-5">
@@ -21,7 +21,7 @@
 
     <div class="card shadow">
         <div class="card-header d-flex justify-content-between align-items-center bg-light">
-            <h1 class="my-4">Add New Question</h1>   
+            <h1 class="my-4">Create Question</h1>   
             {{-- <a href="{{ route('questions.index') }}" class="btn btn-success">Question List</a> --}}
         </div>
 
@@ -29,30 +29,40 @@
             <form action="{{ route('questions.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
 
-                <div class="form-group mb-3">
-                    <label for="quiz" class="form-label fw-bold">Category</label>
-                    <select id="quiz" name="quiz" class="form-select" required>
-                        <option value="" disabled selected>Select a Category</option>
-                        @foreach($quizzes as $quiz)
-                            <option value="{{ $quiz->id }}" {{ old('quiz') == $quiz->id ? 'selected' : '' }}>
-                                {{ $quiz->heading }}
-                            </option>
-                        @endforeach
-                    </select>
-                </div>
-
-
-                <div class="mb-3">
-                    <label for="question_number" class="form-label">Question Number:</label>
-                    <input type="number" class="form-control" id="question_number" name="question_number" value="{{ old('question_number') }}" required>
-                </div>
-
                 <div class="mb-3">
                     <label for="question_text" class="form-label">Question:</label>
                     <textarea class="form-control" id="question_text" name="question_text" required>{{ old('question_text') }}</textarea>
                 </div>
-
-
+                <div class="mb-3">
+                    <label for="difficulty" class="form-label">Difficulty:</label>
+                    <div>
+                        @foreach (['easy', 'medium', 'hard', 'mix'] as $level)
+                            <div class="form-check">
+                                <input 
+                                    type="radio" 
+                                    name="difficulty" 
+                                    id="difficulty-{{ $level }}" 
+                                    value="{{ $level }}" 
+                                    class="form-check-input"
+                                    @if (old('difficulty') == $level) checked @endif
+                                >
+                                <label for="difficulty-{{ $level }}" class="form-check-label">{{ ucfirst($level) }}</label>
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+                
+                <div class="mb-3">
+                    <label for="subject" class="form-label">Subject:</label>
+                    <select class="form-control" id="subject" name="subject" required>
+                        <option value="" disabled selected>Select a subject</option>
+                        <option value="bca" @if (old('subject') == 'bca') selected @endif>BCA</option>
+                        <option value="csit" @if (old('subject') == 'csit') selected @endif>CSIT</option>
+                        <option value="bit" @if (old('subject') == 'bit') selected @endif>BIT</option>
+                        <option value="bhm" @if (old('subject') == 'bhm') selected @endif>BHM</option>
+                    </select>
+                </div>
+                
                 <div class="mb-3">
                     <label for="question_image" class="form-label">Upload Question Image</label>
                     <input type="file" class="form-control" id="question_image" name="question_image" accept="image/*">
@@ -79,7 +89,6 @@
                 </select>
             </div>
 
-            <!-- Text options -->
             <div id="text-options" class="mb-3" style="display: none;">
                 <label class="form-label">Text Options</label>
                 <input type="text" class="form-control mb-2" name="option1" placeholder="Option 1" value="{{ old('option1') }}">
@@ -88,7 +97,6 @@
                 <input type="text" class="form-control mb-2" name="option4" placeholder="Option 4" value="{{ old('option4') }}">
             </div>
 
-            <!-- Image options -->
             <div id="image-options" class="mb-3" style="display: none;">
                 <label for="image_option" class="form-label">Upload Image Options</label>
                 <input type="file" class="form-control mb-2" name="image_option1" accept="image/*">
@@ -97,7 +105,6 @@
                 <input type="file" class="form-control mb-2" name="image_option4" accept="image/*">
             </div>
 
-            <!-- Audio options -->
             <div id="audio-options" class="mb-3" style="display: none;">
                 <label for="audio_option" class="form-label">Upload Audio Options</label>
                 <input type="file" class="form-control mb-2" name="audio_option1" accept="audio/*">
@@ -106,7 +113,6 @@
                 <input type="file" class="form-control mb-2" name="audio_option4" accept="audio/*">
             </div>
 
-            <!-- Correct option selection -->
             <div class="mb-3">
                 <label for="correct_option" class="form-label">Select Correct Option</label>
                 <select class="form-select" id="correct_option" name="correct_option" required>
@@ -117,8 +123,7 @@
                 </select>
             </div>
 
-            <!-- Submit button -->
-            <button type="submit" class="btn btn-success">Submit Question</button>
+            <button type="submit" class="btn btn-success">Create Question</button>
         </div>
     </div>
     </form>

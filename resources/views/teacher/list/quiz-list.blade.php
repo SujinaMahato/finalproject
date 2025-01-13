@@ -15,16 +15,16 @@
             </ul>
         </div>
     @endif
-    <h1>Quiz List</h1>
-    <a href="{{ route('quizzes.create') }}" class="btn btn-success">Add Quiz</a>
+    <h1>Category List</h1>
+    <a href="{{ route('quizzes.create') }}" class="btn btn-success">Add Category</a>
     
     <table class="table table-striped">
         <thead>
             <tr>
                 <th>ID</th>
                 <th>Photo</th>
+                <th>Category</th>
                 <th>Heading</th>
-                <th>Sub Heading</th>
                 <th>Price</th>
                 <th>Time Duration</th>
                 <th>Created By</th>

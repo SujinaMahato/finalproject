@@ -29,4 +29,13 @@ class Quiz extends Model
     {
         return $query->where('active', 1); 
     }
+    public function ratings()
+    {
+        return $this->hasMany(Rating::class);
+    }
+    public function averageRating()
+{
+    return $this->ratings()->avg('rating');
+}
+
 }

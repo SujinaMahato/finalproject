@@ -39,20 +39,13 @@
                         <input type="password" name="password" class="form-control" id="password" placeholder="Password" required>
                     </div>
 
-                    <div class="mb-3 d-flex justify-content-between align-items-center">
-                        <a href="" class="text-decoration-none">Forgot Password?</a>
-                    </div>
+                    
 
                     <div class="d-grid gap-2">
                         <button type="submit" class="btn btn-success">Login</button>
                     </div>
 
-                    <div class="text-center mt-3">
-                        <button class="btn btn-outline-secondary w-100 d-flex align-items-center justify-content-center">
-                            <img src="/images/google.webp" alt="Google Icon" class="me-2" style="width: 20px;"> 
-                            Continue as Google
-                        </button>
-                    </div>
+                   
                 </form>
             </div>
 

@@ -94,7 +94,6 @@
         </div>    </div>
 
     <div class="mt-4 bg-white p-4 rounded shadow question-container">
-        <!-- Left column for question number, text, and media -->
         <div class="question-left">
             <h2 class="text-lg font-bold mb-4">Question {{ $question->question_number }}:{{ $question->question_text }}</h2>
             @if ($question->question_image)
@@ -108,7 +107,6 @@
         </div>
 
 
-         <!-- Right column for answer options -->
          <div class="question-right">
             <form action="{{ route('questions.answer', ['quiz_id' => $quiz->id, 'question_id' => $question->id]) }}" method="POST" id="quizForm">
                 @csrf
@@ -155,10 +153,15 @@
     
 
     @if ($nextQuestionNumber)
-        <button type="submit" form="quizForm" class="bg-blue-500 text-white p-2 rounded nav-button">Next</button>
-    @else
-        <button type="submit" form="quizForm" class="bg-blue-500 text-white p-2 rounded nav-button" onclick="return confirmSubmit()">Submit</button>
-    @endif
+    <button type="submit" form="quizForm" class="bg-blue-500 text-white p-2 rounded nav-button">Next</button>
+@else
+    <div class="d-flex justify-content-end mt-3">
+        <form method="GET" action="{{ route('student.viewresult', ['quiz_id' => $quiz->id]) }}">
+            <button class="bg-blue-500 text-white p-2 rounded nav-button" id="submitExamButton" onclick="return confirmSubmit()">Submit</button>
+        </form>
+    </div>
+@endif
+
 </div>
 <script>
 document.addEventListener("DOMContentLoaded", function () {
@@ -166,28 +169,22 @@ document.addEventListener("DOMContentLoaded", function () {
     let startTime = localStorage.getItem('startTime');
     let timeRemaining = timeLimit;
 
-    // Check if restarting
     if (localStorage.getItem('restartExam')) {
         startTime = Date.now();
         localStorage.setItem('startTime', startTime);
         timeRemaining = timeLimit;
 
-        // Clear all selections and reset question statuses
         document.querySelectorAll('input[type="radio"]').forEach(input => input.checked = false);
         document.querySelectorAll('.question-button').forEach(button => button.classList.remove('solved'));
 
-        // Reset counters
         localStorage.setItem('solvedCount', 0);
         localStorage.setItem('unsolvedCount', {{ $totalQuestions }});
 
-        // Clear the restart flag
         localStorage.removeItem('restartExam');
     } else if (startTime) {
-        // Calculate elapsed time if the exam has already started
         let elapsedTime = Math.floor((Date.now() - startTime) / 1000);
         timeRemaining = Math.max(timeLimit - elapsedTime, 0);
     } else {
-        // Set initial start time
         startTime = Date.now();
         localStorage.setItem('startTime', startTime);
     }
@@ -201,14 +198,11 @@ document.addEventListener("DOMContentLoaded", function () {
         if (timeRemaining <= 0) {
             clearInterval(interval);
 
-            // Auto-submit the exam form when time is up
             document.getElementById("quizForm").submit();
 
-            // Show the timer message after form submission
             timerElement.textContent = "Time's up!";
             
-            // Redirect to exam summary page if necessary
-            window.location.href = "{{ route('exam.summary', ['quiz_id' => $quiz->id]) }}";
+            window.location.href = "{{ route('student.viewresult', ['quiz_id' => $quiz->id])}}";
         }
 
         timeRemaining--;
@@ -233,7 +227,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     function confirmSubmit() {
-        return confirm('You have completed the quiz. Are you sure you want to submit?');
+        return confirm('You have completed the quiz. Are you sure you want to submit and view the results?');
     }
 </script>
 </body>

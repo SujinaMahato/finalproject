@@ -105,6 +105,7 @@ class ResultController extends Controller
     ]);
 
     return view('student.viewresult', [
+        'quiz'=>$quiz,
         'studentName' => $studentName,
         'examId' => $examId,
         'examTitle' => $examTitle,

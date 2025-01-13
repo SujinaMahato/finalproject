@@ -68,9 +68,7 @@
       <li class="nav-item d-none d-sm-inline-block">
         <a href="{{ route('login') }}" class="nav-link">Login</a>
       </li>
-      <li class="nav-item d-none d-sm-inline-block">
-        <a href="#" class="nav-link">Contact</a>
-      </li>
+      
     </ul>
 
     <!-- Right navbar links -->
@@ -100,59 +98,23 @@
 
       <nav class="mt-2">
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-          <!-- Profile Menu Item -->
           <li class="nav-item menu-open">
-            <a href="{{ route('teacher.profile') }}" class="nav-link">
+            <a href="{{ route('teacher.dashboard') }}" class="nav-link">
               <i class="nav-icon fas fa-user"></i>
-              <p>Profile</p>
+              <p>Dashboard</p>
             </a>
           </li>
 
-          <!-- Create Menu Item -->
-          <li class="nav-item">
-            <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-edit"></i>
-              <p>Create <i class="right fas fa-angle-left"></i></p>
-            </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="{{ route('quizzes.create') }}" class="nav-link">
-                    <i class="far fa-circle nav-icon"></i>
-                    <p>Quiz</p>
-                </a>
-            </li>  
-            <li class="nav-item">
-              <a href="{{ route('questions.create') }}" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Question Answer</p>
-              </a>
-          </li>  
-              <li class="nav-item">
-                <a href="{{ route('tags.create') }}" class="nav-link">
-                    <i class="far fa-circle nav-icon"></i>
-                    <p>Tag</p>
-                </a>
-            </li>  
-            <li class="nav-item">
-              <a href="{{ route('packages.create') }}" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Package</p>
-              </a>
-          </li>           
-            </ul>
-          </li>
-
-          <!-- List Update Menu Item -->
           <li class="nav-item">
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-list"></i>
-              <p>List Update <i class="fas fa-angle-left right"></i></p>
+              <p>List<i class="fas fa-angle-left right"></i></p>
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
                 <a href="{{ route('quizzes.index') }}" class="nav-link">
                     <i class="far fa-circle nav-icon"></i>
-                    <p>Quiz</p>
+                    <p>Category</p>
                 </a>
             </li>  
             <li class="nav-item">
@@ -167,10 +129,21 @@
                     <p>Tag</p>
                 </a>
             </li>
+            <li class="nav-item">
+              <a href="{{ route('packages.create') }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Package</p>
+              </a>
+          </li> 
+          <li class="nav-item">
+            <a href="{{route('creates.index')}}" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Create</p>
+            </a>
+        </li>
           
             </ul>
           </li>
-          <!-- Results Menu Item -->
           <li class="nav-item">
             <a href="{{ route('student.results') }}" class="nav-link">
               <i class="nav-icon fas fa-poll"></i>

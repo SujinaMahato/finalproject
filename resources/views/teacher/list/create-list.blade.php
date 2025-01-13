@@ -16,7 +16,7 @@
         </div>
     @endif
     
-    <h2>Questions List</h2>
+    <h2>Questions</h2>
 
     <div class="row mb-4">
         <div class="col-md-6">
@@ -29,17 +29,17 @@
         <div class="col-md-6 text-end">
             <div class="row mb-2">
                 <div class="col-md-12 text-end">
-                    <a href="{{ route('questions.create') }}" class="btn btn-success">Add New Question</a>
+                    <a href="{{ route('creates.create') }}" class="btn btn-success">Create New Question</a>
                 </div>
             </div>
 
-            <label for="quiz-select" class="me-2 fw-bold">Select Category:</label>
+            {{-- <label for="quiz-select" class="me-2 fw-bold">Select Category:</label>
             <select id="quiz-select" class="form-select d-inline-block w-auto">
                 <option value="">Select Category</option>
                 @foreach($quizzes as $quiz)
                     <option value="{{ $quiz->id }}">{{ $quiz->heading }}</option>
                 @endforeach
-            </select>
+            </select> --}}
         </div>
     </div>
 
@@ -47,9 +47,9 @@
         <span class="visually-hidden">Loading...</span>
     </div>
 
-    <div id="questions-container" class="question-list" aria-live="polite">
+    {{-- <div id="questions-container" class="question-list" aria-live="polite">
         <p class="text-center text-muted">Select a quiz to view questions...</p>
-    </div>
+    </div> --}}
 </div>
 @endsection
 

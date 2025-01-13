@@ -30,9 +30,9 @@
                 @method('PUT')
 
                 <div class="form-group mb-3">
-                    <label for="quiz" class="form-label fw-bold">Quiz</label>
+                    <label for="quiz" class="form-label fw-bold">Category</label>
                     <select id="quiz" name="quiz" class="form-select" required>
-                        <option value="" disabled>Select a Quiz</option>
+                        <option value="" disabled>Select a Category</option>
                         @foreach($quizzes as $quiz)
                             <option value="{{ $quiz->id }}" {{ old('quiz', $question->quiz_id) == $quiz->id ? 'selected' : '' }}>
                                 {{ $quiz->heading }}
@@ -46,15 +46,6 @@
                     <input type="number" class="form-control" id="question_number" name="question_number" value="{{ old('question_number', $question->question_number) }}" required>
                 </div>
 
-                <div class="form-group mb-3">
-                    <label for="sub_question" class="form-label">Sub Questions:</label>
-                    <textarea class="form-control" name="sub_question" id="sub_question" required>{{ old('sub_question', $question->sub_question) }}</textarea>
-                </div>
-
-                <div class="mb-3">
-                    <label for="question_table" class="form-label">Question Table</label>
-                    <textarea class="form-control" name="question_table" rows="5">{{ old('question_table', $question->question_table) }}</textarea>
-                </div>
 
                 <div class="mb-3">
                     <label for="question_text" class="form-label">Question</label>

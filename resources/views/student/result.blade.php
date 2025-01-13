@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EPS-TOPIK UBT Trail Exam</title>
+    <title>Online Test</title>
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
@@ -179,9 +179,7 @@
     <a href="{{ route('student.dashboard') }}" class="{{ request()->routeIs('dashboard') ? 'active' : '' }}">
         <i class="fas fa-list"></i> Exam List
     </a>
-    <a href="#" class="{{ request()->routeIs('live.exam') ? 'active' : '' }}">
-        <i class="fas fa-play-circle"></i> Live Exam
-    </a>
+    
     <a href="{{ route('student.result') }}" class="{{ request()->routeIs('result') ? 'active' : '' }}">
         <i class="fas fa-poll"></i> Results
     </a>
@@ -191,9 +189,8 @@
 </div>
 
 <div class="content">
-    <!-- Top Bar -->
     <div class="top-bar">
-    <h3>APS KLCTRAIL EXAM</h3>
+    <h3>Online Test</h3>
     <div class="user-icon">
         <div class="user-info">
             <div class="user-name">
@@ -223,7 +220,6 @@
 
     <div class="flex justify-center items-center min-h-screen px-4">
         <div class="bg-white rounded-lg shadow-lg p-6 w-full max-w-4xl">
-            <!-- Table -->
             <table class="table table-bordered">
     <thead>
         <tr>
@@ -244,7 +240,6 @@
             <td>{{ $result->percentage }}</td>
             <td>{{ $result->created_at }}</td>
             <td>
-                <!-- Delete Button with Form -->
                 <form action="{{ route('student.result.delete', $result->id) }}" method="POST" style="display:inline;">
                     @csrf
                     @method('DELETE')
