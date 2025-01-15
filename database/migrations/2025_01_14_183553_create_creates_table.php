@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('creates_tables', function (Blueprint $table) {
+        Schema::create('creates', function (Blueprint $table) {
             $table->id();
             $table->text('question_text'); 
             $table->enum('difficulty', ['easy', 'medium', 'hard', 'mix']); 
@@ -23,7 +23,7 @@ return new class extends Migration
             $table->text('option2')->nullable(); 
             $table->text('option3')->nullable(); 
             $table->text('option4')->nullable(); 
-            $table->string('correct_option'); 
+            $table->string('correct_option')->nullable(); 
             $table->timestamps();
         });
     }
@@ -33,6 +33,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('creates_tables');
+        Schema::dropIfExists('creates');
     }
 };

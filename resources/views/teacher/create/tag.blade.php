@@ -1,5 +1,4 @@
 @extends('teacher.dashboard')
-@section('title', 'Tag')
 @section('content')
 <div class="container">
     @if (session('success'))

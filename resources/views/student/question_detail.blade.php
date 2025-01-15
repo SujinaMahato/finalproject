@@ -156,7 +156,7 @@
     <button type="submit" form="quizForm" class="bg-blue-500 text-white p-2 rounded nav-button">Next</button>
 @else
     <div class="d-flex justify-content-end mt-3">
-        <form method="GET" action="{{ route('student.viewresult', ['quiz_id' => $quiz->id]) }}">
+        <form method="GET" action="{{ route('student.viewresult', ['quiz_id' => $quiz_id])  }}">
             <button class="bg-blue-500 text-white p-2 rounded nav-button" id="submitExamButton" onclick="return confirmSubmit()">Submit</button>
         </form>
     </div>

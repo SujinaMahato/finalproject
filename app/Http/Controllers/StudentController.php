@@ -90,6 +90,7 @@ class StudentController extends Controller
             'totalQuestions' => $totalQuestions,
             'timeDuration'=>$timeDuration,
             'timeLimit' => $timeLimit, 
+            'quiz_id' => $quiz_id,
         ]);
     }
 

@@ -1,6 +1,5 @@
 @extends('teacher.dashboard')
 
-@section('title', 'Create Question')
 
 @section('content')
 <div class="container mt-5">
@@ -26,7 +25,7 @@
         </div>
 
         <div class="card-body">
-            <form action="{{ route('questions.store') }}" method="POST" enctype="multipart/form-data">
+            <form action="{{ route('creates.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
 
                 <div class="mb-3">

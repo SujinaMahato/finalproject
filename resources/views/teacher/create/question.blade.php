@@ -1,6 +1,5 @@
 @extends('teacher.dashboard')
 
-@section('title', 'Add Question')
 
 @section('content')
 <div class="container mt-5">
