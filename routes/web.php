@@ -159,6 +159,11 @@ Route::delete('/student/result/delete/{id}', [ResultController::class, 'deleteRe
 Route::get('/available-exams', [StudentController::class, 'showAvailableExams'])->name('available.exams');
 Route::get('/exam/view/{packageName}', [StudentController::class, 'showViews'])->name('exam.showViews');
 
+//generate list
+Route::get('/teacher/generated-list', [CreateController::class, 'showGeneratedList'])->name('generated.list');
+Route::get('/teacher/generated-list/{id}', [CreateController::class, 'viewGeneratedListItem'])->name('generated.list.item');
+
+
 Route::get('/results', [StudentController::class, 'showResults'])->name('result');
 // Routes for admin-specific functionality
 Route::prefix('admin')->middleware(['auth:admin'])->group(function () {

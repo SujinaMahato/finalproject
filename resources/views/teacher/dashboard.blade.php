@@ -147,6 +147,12 @@
               <p>Generate</p>
           </a>
       </li>
+      <li class="nav-item">
+        <a href="{{route('generated.list')}}" class="nav-link">
+            <i class="far fa-circle nav-icon"></i>
+            <p>Generated</p>
+        </a>
+    </li>
             </ul>
           </li>
           <li class="nav-item">

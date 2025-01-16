@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Answer;
+use App\Models\GeneratedQuestionPaper;
 use App\Models\Create;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\user;
@@ -131,6 +131,64 @@ class CreateController extends Controller
 }
 
 
+
+
+/*public function generateQuestionPaper(Request $request)
+{
+    $validatedData = $request->validate([
+        'title' => 'required|string',
+        'difficulty' => 'required|in:easy,medium,hard,mix',
+        'number_of_questions' => 'required|integer|min:1',
+    ]);
+
+    $number = $validatedData['number_of_questions'];
+    $difficulty = $validatedData['difficulty'];
+
+    $questions = collect();
+
+    if ($difficulty === 'mix') {
+        $easyCount = floor($number * (2 / 5));
+        $mediumCount = floor($number * (2 / 5));
+        $hardCount = $number - ($easyCount + $mediumCount);
+
+        $easyQuestions = Create::where('difficulty', 'easy')->count();
+        $mediumQuestions = Create::where('difficulty', 'medium')->count();
+        $hardQuestions = Create::where('difficulty', 'hard')->count();
+
+        if ($easyQuestions < $easyCount || $mediumQuestions < $mediumCount || $hardQuestions < $hardCount) {
+            return back()->withErrors(['message' => 'Not enough questions available for the selected difficulty.'])->withInput();
+
+        }
+
+        $easyQuestions = Create::where('difficulty', 'easy')->inRandomOrder()->take($easyCount)->get();
+        $mediumQuestions = Create::where('difficulty', 'medium')->inRandomOrder()->take($mediumCount)->get();
+        $hardQuestions = Create::where('difficulty', 'hard')->inRandomOrder()->take($hardCount)->get();
+
+        $questions = $easyQuestions->merge($mediumQuestions)->merge($hardQuestions);
+    } else {
+        $availableQuestions = Create::where('difficulty', $difficulty)->count();
+
+        if ($availableQuestions < $number) {
+            return back()->withErrors(['message' => 'Not enough questions available for the selected difficulty.']);
+        }
+
+        $questions = Create::where('difficulty', $difficulty)->inRandomOrder()->take($number)->get();
+    }
+
+    $questions = $questions->shuffle();
+
+    $questionPaper = [
+        'title' => $validatedData['title'],
+        'questions' => $questions,
+    ];
+
+    $fileName = 'question_paper_' . time() . '.json';
+    Storage::put('public/question_papers/' . $fileName, json_encode($questionPaper));
+
+    $subject = $questions->first()->subject ?? 'N/A';
+    return view('teacher.create.question_paper', compact('questionPaper', 'subject', 'fileName'));
+}*/
+
 public function generateQuestionPaper(Request $request)
 {
     $validatedData = $request->validate([
@@ -149,12 +207,26 @@ public function generateQuestionPaper(Request $request)
         $mediumCount = floor($number * (2 / 5));
         $hardCount = $number - ($easyCount + $mediumCount);
 
+        $easyQuestions = Create::where('difficulty', 'easy')->count();
+        $mediumQuestions = Create::where('difficulty', 'medium')->count();
+        $hardQuestions = Create::where('difficulty', 'hard')->count();
+
+        if ($easyQuestions < $easyCount || $mediumQuestions < $mediumCount || $hardQuestions < $hardCount) {
+            return back()->withErrors(['message' => 'Not enough questions available for the selected difficulty.'])->withInput();
+        }
+
         $easyQuestions = Create::where('difficulty', 'easy')->inRandomOrder()->take($easyCount)->get();
         $mediumQuestions = Create::where('difficulty', 'medium')->inRandomOrder()->take($mediumCount)->get();
         $hardQuestions = Create::where('difficulty', 'hard')->inRandomOrder()->take($hardCount)->get();
 
         $questions = $easyQuestions->merge($mediumQuestions)->merge($hardQuestions);
     } else {
+        $availableQuestions = Create::where('difficulty', $difficulty)->count();
+
+        if ($availableQuestions < $number) {
+            return back()->withErrors(['message' => 'Not enough questions available for the selected difficulty.']);
+        }
+
         $questions = Create::where('difficulty', $difficulty)->inRandomOrder()->take($number)->get();
     }
 
@@ -169,8 +241,41 @@ public function generateQuestionPaper(Request $request)
     Storage::put('public/question_papers/' . $fileName, json_encode($questionPaper));
 
     $subject = $questions->first()->subject ?? 'N/A';
+
+    // **Save to Database**
+    GeneratedQuestionPaper::create([
+        'title' => $validatedData['title'],
+        'subject' => $subject,
+        'file_name' => $fileName,
+        'questions' => json_encode($questions), // Save as JSON
+    ]);
+
     return view('teacher.create.question_paper', compact('questionPaper', 'subject', 'fileName'));
 }
+
+
+public function showGeneratedList()
+{
+    $generatedList = GeneratedQuestionPaper::latest()->get();
+
+    return view('teacher.list.generated_list', compact('generatedList'));
+}
+public function viewGeneratedListItem()
+{
+    // Fetch all the generated question papers
+    $questionPapers = GeneratedQuestionPaper::all();
+
+    // Decode the 'questions' field in each paper
+    foreach ($questionPapers as $questionPaper) {
+        $questionPaper->questions = json_decode($questionPaper->questions, true);
+    }
+
+    // Pass data to the view
+    return view('teacher.list.view_generated_list_item', compact('questionPapers'));
+}
+
+
+
 
 
 }

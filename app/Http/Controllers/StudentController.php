@@ -7,8 +7,9 @@ use Illuminate\Http\Request;
 use App\Models\Student;
 use App\Models\Quiz;
 use App\Models\Package;
-use App\Models\Option;
+use App\Models\Category;
 use App\Models\Question;
+use App\Models\GeneratedUserQuestion;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
@@ -19,7 +20,7 @@ class StudentController extends Controller
     public function showDashboard()
     {
         $user = Auth::user();
-        $quizzes = Quiz::with('tags')->paginate(10);
+         $quizzes = Quiz::with('tags')->paginate(10);
 
             
         if ($user) {
@@ -30,15 +31,19 @@ class StudentController extends Controller
         if ($user) {
             return view('student.dashboard', [
                 'studentName' => $user->firstname,
+                
                 'quizzes' => $quizzes
             ]);
         } else {
             return view('student.dashboard', [
                 'studentName' => 'Unknown Student',
+                
                 'quizzes' => []
             ]);
         }
+
     }
+   
 
 
     public function showQuestion($quiz_id, $question_number)
@@ -197,6 +202,7 @@ class StudentController extends Controller
     public function studentDashboard()
     {
         $userId = Auth::id();
+        
         $studentName = Auth::user()->username;
         $quizzes = Quiz::with('tags')->get();
         $payments = Payment::where('user_id', $userId)->where('is_active', 1)->get();
@@ -246,5 +252,9 @@ public function showAvailableExams(Request $request)
 
     return view('student.available_exams', compact('studentName', 'quizzes'));
 }
+
+
+
+
 
 }
