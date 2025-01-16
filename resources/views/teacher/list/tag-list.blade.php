@@ -33,7 +33,7 @@
                 <td>{{ optional($tag->creator)->firstname . ' ' . optional($tag->creator)->lastname ?? 'N/A' }}</td> 
                 <td>{{ optional($tag->updater)->firstname . ' ' . optional($tag->updater)->lastname ?? 'N/A' }}</td> 
                 <td>
-                    <a href="{{ route('tags.edit', $tag->id) }}" class="btn btn-warning">Edit</a>
+                    <a href="{{ route('tags.edit', $tag->id) }}" class="btn btn-primary">Edit</a>
                     <form action="{{ route('tags.destroy', $tag->id) }}" method="POST" style="display:inline-block;" onsubmit="return confirm('Are you sure you want to delete this tag?');">
                         @csrf
                         @method('DELETE')

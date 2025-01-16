@@ -52,7 +52,7 @@
                     @endforeach
                 </td>
                 <td>
-                    <a href="{{ route('quizzes.edit', $quiz->id) }}" class="btn btn-warning">Edit</a>
+                    <a href="{{ route('quizzes.edit', $quiz->id) }}" class="btn btn-primary">Edit</a>
                     <form action="{{ route('quizzes.destroy', $quiz->id) }}" method="POST" style="display:inline;">
                         @csrf
                         @method('DELETE')

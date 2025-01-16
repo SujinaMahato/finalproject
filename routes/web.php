@@ -111,7 +111,9 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('questions', QuestionController::class);
     Route::get('/questions/{quizId}/fetch', [QuestionController::class, 'fetchQuestions'])->name('questions.fetch');
     Route::resource('tags', TagController::class);
-    Route::resource('creates', CreateController::class);
+    Route::resource('creates', CreateController::class)->except(['show']);
+    Route::post('creates/generate', [CreateController::class, 'generateQuestionPaper'])->name('creates.generateQuestionPaper');
+    Route::get('creates/generate', [CreateController::class, 'generate'])->name('creates.generate');
     Route::resource('packages', PackageController::class);
     Route::post('quiz/{quizId}/rating', [RatingController::class, 'store'])->name('ratings.store');
 

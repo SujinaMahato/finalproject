@@ -54,7 +54,7 @@
                     <td>{{ $package->name }}</td>
                     <td>{{ $package->price }}</td>
                     <td>
-                        <a href="{{ route('packages.edit', $package->id) }}" class="btn btn-warning">Edit</a>
+                        <a href="{{ route('packages.edit', $package->id) }}" class="btn btn-primary">Edit</a>
                         <form action="{{ route('packages.destroy', $package->id) }}" method="POST" style="display:inline;">
                             @csrf
                             @method('DELETE')
