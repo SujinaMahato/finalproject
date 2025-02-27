@@ -4,7 +4,7 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-3">
-                <div class="card bg-primary text-white mb-4">
+                <div class="card mb-4" style="background-color: #D6EAF8; color: #1B4F72;">
                     <div class="card-body">
                         <h5>Total Questions</h5>
                         <h3>{{ $totalQuestions }}</h3>
@@ -12,7 +12,7 @@
                 </div>
             </div>
             <div class="col-md-3">
-                <div class="card bg-success text-white mb-4">
+                <div class="card mb-4" style="background-color: #D5F5E3; color: #186A3B;">
                     <div class="card-body">
                         <h5>Passed Users</h5>
                         <h3>{{ $passCount }}</h3>
@@ -20,7 +20,7 @@
                 </div>
             </div>
             <div class="col-md-3">
-                <div class="card bg-danger text-white mb-4">
+                <div class="card mb-4" style="background-color: #FADBD8; color: #922B21;">
                     <div class="card-body">
                         <h5>Failed Users</h5>
                         <h3>{{ $failCount }}</h3>
@@ -28,7 +28,7 @@
                 </div>
             </div>
             <div class="col-md-3">
-                <div class="card bg-info text-white mb-4">
+                <div class="card mb-4" style="background-color: #D1F2EB; color: #0B5345;">
                     <div class="card-body">
                         <h5>Total Users</h5>
                         <h3>{{ $totalUsers }}</h3>
@@ -36,7 +36,7 @@
                 </div>
             </div>
             <div class="col-md-3">
-                <div class="card bg-warning text-white mb-4">
+                <div class="card mb-4" style="background-color: #FCF3CF; color: #7D6608;">
                     <div class="card-body">
                         <h5>Total Quizzes</h5>
                         <h3>{{ $totalQuizzes }}</h3>

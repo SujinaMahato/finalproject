@@ -41,7 +41,7 @@
             @foreach ($questionPaper['questions'] as $index => $question)
                 <li>
                     <p>{{ $question['question_text'] }}</p>
-                    <p><strong>Difficulty:</strong> {{ ucfirst($question['difficulty']) }}</p>
+                   
                 </li>
             @endforeach
         </ol>
@@ -49,7 +49,7 @@
 
     <!-- Footer -->
     <div class="text-center mt-4">
-        <a href="{{ asset('storage/question_papers/' . $fileName) }}" class="btn btn-success" download>Download Question Paper</a>
+       
         <button class="btn btn-primary" onclick="window.print()">Print</button>
     </div>
 </div>
